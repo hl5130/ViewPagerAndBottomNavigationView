@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context="com.assin.buttonnavtion.MainActivity">
 
+    <!--TODO:(4) 添加ViewPager-->
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_content"
         android:layout_width="match_parent"
@@ -16,6 +17,14 @@
 
     </android.support.v4.view.ViewPager>
 
+    <!--TODO:(2)修改选中时的颜色-->
+    <!--
+       1、 使用一下两个属性，自己创建selector
+        app:itemIconTint="@drawable/bottom_navigation_selector"
+        app:itemTextColor="@drawable/bottom_navigation_selector"
+        2、如果不使用这两个属性，那被选中时的颜色就是 @color/colorPrimary，
+           就是主题色
+        -->
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"

@@ -18,6 +18,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO:(1)创建新的Activity，创建时选择 BottomNavigationActivity
 public class MainActivity extends AppCompatActivity implements OneFragment.OnFragmentInteractionListener
         ,ViewPager.OnPageChangeListener{
 
@@ -25,14 +26,18 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
     private MenuItem menuItem;
     private BottomNavigationView navigation;
 
+    // TODO:(3)BottomNavigationView 按钮的选中／点击事件
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            // TODO:(5) 实现联动，点击按钮时，滑动到指定的ViewPager页面
+            // 1、滑动过去，用mViewPagerContent.setCurrentItem(index);
+            // 2、直接切换过去，用mViewPagerContent.setCurrentItem(0,false);  false就代表不进行滑动
             switch (item.getItemId()) {
                 case R.id.navigation_choiceness:
-                    mViewPagerContent.setCurrentItem(0,false);  //第二个参数 为false，就是指不需要通过滑动切换过去
+                    mViewPagerContent.setCurrentItem(0,false);
                     return true;
                 case R.id.navigation_discover:
                     mViewPagerContent.setCurrentItem(1,false);
@@ -55,17 +60,15 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mViewPagerContent = (ViewPager) findViewById(R.id.vp_content);
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
-
-        //默认 >3 的选中效果会影响ViewPager的滑动切换时的效果，故利用反射去掉
-        BottomNavigationViewHelper.disableShiftMode(navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+        initUI();
         setFragment();
-        mViewPagerContent.addOnPageChangeListener(this);
+    }
 
-        //禁止ViewPager滑动
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void initUI(){
+        mViewPagerContent = (ViewPager) findViewById(R.id.vp_content);
+        mViewPagerContent.addOnPageChangeListener(this);
+        // TODO:(9)禁止ViewPager的滑动(就启用下面的代码)，可选项
 //        mViewPagerContent.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
 //            public boolean onTouch(View v, MotionEvent event) {
@@ -73,7 +76,13 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
 //            }
 //        });
 
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        // TODO:(10)去掉按钮的滑动切换效果，可选项
+        //默认 >3 的选中效果会影响ViewPager的滑动切换时的效果，故利用反射去掉
+        BottomNavigationViewHelper.disableShiftMode(navigation);
     }
+
     private void setFragment(){
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(OneFragment.newInstance("what","why"));
@@ -87,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
     public void onFragmentInteraction(Uri uri) {}
 
     /////////////////////////////OnPageChangeListener////////////////////////////////////////////////////
-
+    // TODO:(6) 实现ViewPager.OnPageChangeListener接口
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -95,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
 
     @Override
     public void onPageSelected(int position) {
+
+        // TODO:(7) 实现联动，滑动ViewPager时，对应的按钮为选中状态
         if (menuItem != null){
             menuItem.setChecked(false);
         }else {
@@ -109,8 +120,9 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
 
     }
 
-
-
+    // TODO:(8)创建ViewPager的Adapter
+    // 1、如果Fragment过多，使用FragmentStatePagerAdapter，可以节省内存资源
+    // 2、如果Fragment过少（少于5个）,FragmentPagerAdapter，可以增加性能
     private class ViewPagerAdapter extends FragmentPagerAdapter{
 
         private List<Fragment> fragmentList;
@@ -130,8 +142,4 @@ public class MainActivity extends AppCompatActivity implements OneFragment.OnFra
             return fragmentList.size();
         }
     }
-
-
-
-
 }
