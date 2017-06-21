@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ButtonNavtion</string>
+    <string name="title_choiceness">精选</string>
+    <string name="title_discover">发现</string>
+    <string name="title_service">客服</string>
+    <string name="title_my">我的</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
